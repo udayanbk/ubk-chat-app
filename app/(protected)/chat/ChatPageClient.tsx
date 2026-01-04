@@ -1,7 +1,7 @@
-"use client";
+
 
 import { Suspense } from "react";
-import UserList from "@/components/chat/userList/UserList";
+import UserList from "@/components/chat/userList/UserList.server";
 import ChatWindow from "@/components/chat/ChatWindow";
 import UserListSkeleton from "@/components/chat/userList/UserListSkeleton";
 

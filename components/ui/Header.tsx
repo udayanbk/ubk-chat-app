@@ -81,7 +81,7 @@ export default function Header() {
 
   return (
     <>
-      {(pathname === "/login" || pathname === "/register") ?
+      {(pathname === "/login" || pathname === "/register" || pathname === "/") ?
         <header className="w-full bg-white border-b shadow-sm px-4 py-3 flex items-center justify-center">
           <Link href="/" className="text-xl font-bold text-blue-600">
             UBK Chat
@@ -101,11 +101,11 @@ export default function Header() {
               onClick={() => setOpen((v) => !v)}
             >
               <span className="font-medium">
-                {user.username || user.name || "User"}
+                {user?.username ?? user?.name ?? "User"}
               </span>
 
               <img
-                src={user.avatar || "/default_avatar.png"}
+                src={user?.avatar ?? "/default_avatar.png"}
                 alt="avatar"
                 className="w-9 h-9 rounded-full border object-cover"
               />

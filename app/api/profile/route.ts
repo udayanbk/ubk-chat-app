@@ -3,8 +3,7 @@ import User from "@/lib/models/User";
 import { connectDB } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-// import { getServer } from "@/lib/socket/socketServer";
-// const io = getServer();
+import { revalidatePath } from "next/cache";
 
 /* ---------------- GET : public profile by id ---------------- */
 export async function GET(req: Request) {
@@ -92,7 +91,6 @@ export async function PATCH(req: Request) {
 
     /* ---------------- STATUS LIKE TOGGLE ---------------- */
     if (toggleStatusLike && targetUserId) {
-      // 🔹 logged-in user
       const me = await User.findOne({ email: myEmail }).select("_id");
       if (!me) {
         return NextResponse.json(
@@ -101,7 +99,6 @@ export async function PATCH(req: Request) {
         );
       }
 
-      // 🔹 target profile owner
       const targetUser = await User.findById(targetUserId).select("statusLikes");
       if (!targetUser) {
         return NextResponse.json(
@@ -120,10 +117,15 @@ export async function PATCH(req: Request) {
         { _id: targetUserId },
         {
           [alreadyLiked ? "$pull" : "$addToSet"]: {
-            statusLikes: me._id, // ✅ ONLY ObjectId
+            statusLikes: me._id,
           },
         }
       );
+
+      // REVALIDATE SERVER COMPONENTS
+      revalidatePath("/chat");
+      revalidatePath("/profile");
+      revalidatePath(`/profile/${targetUserId}`);
 
       return NextResponse.json({
         success: true,
@@ -137,6 +139,10 @@ export async function PATCH(req: Request) {
         { email: myEmail },
         { $pull: { photos: deletePhoto } }
       );
+
+      revalidatePath("/profile");
+      revalidatePath("/chat");
+
       return NextResponse.json({ success: true });
     }
 
@@ -160,6 +166,9 @@ export async function PATCH(req: Request) {
 
     if (Object.keys(updateOps).length > 0) {
       await User.updateOne({ email: myEmail }, { $set: updateOps });
+
+      revalidatePath("/profile");
+      revalidatePath("/chat");
     }
 
     return NextResponse.json({ success: true });
@@ -171,6 +180,7 @@ export async function PATCH(req: Request) {
     );
   }
 }
+
 
 
 
