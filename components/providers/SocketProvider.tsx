@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import socket from "@/lib/socket/socketClient";
 import { useDispatch } from "react-redux";
-import { addMessage, setOnlineUsers } from "@/store/slices/chatSlice";
+import { addMessage } from "@/store/slices/chatSlice";
 
 export default function SocketProvider({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
@@ -13,26 +13,18 @@ export default function SocketProvider({ children }: { children: React.ReactNode
   useEffect(() => {
   if (!session?.user?.email) return;
 
+  fetch("/api/socket"); // 🔥 THIS BOOTS SERVER
   socket.connect();
-
-  // ✅ JOIN USING EMAIL (single source of truth)
   socket.emit("join", session.user.email);
 
-  socket.on("receive-message", (message) => {
-    dispatch(addMessage(message));
-  });
-
-  socket.on("profile-updated", () => {
-    window.dispatchEvent(new Event("profile-updated"));
+  socket.on("receive-message", (msg) => {
+    dispatch(addMessage(msg));
   });
 
   return () => {
     socket.off("receive-message");
-    socket.off("profile-updated");
-    socket.disconnect();
   };
-}, [session?.user?.email, dispatch]);
-
+}, [session?.user?.email]);
 
   return <>{children}</>;
 }

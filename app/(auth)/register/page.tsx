@@ -5,6 +5,7 @@ import { registerSchema } from "@/utils/validations";
 import { z } from "zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 
 type RegisterForm = z.infer<typeof registerSchema>;
 
@@ -28,7 +29,14 @@ export default function RegisterPage() {
     // Validate in frontend also
     const parsed = registerSchema.safeParse(formData);
     if (!parsed.success) {
-      setError(parsed.error.errors[0].message);
+      const errorMsg = JSON.parse(parsed?.error?.message);
+      console.log("errorMsg", errorMsg)
+      toast({
+        variant: "error",
+        title: "Validation error",
+        description: errorMsg?.[0]?.message,
+      });
+    
       return;
     }
 

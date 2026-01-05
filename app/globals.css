@@ -23,7 +23,7 @@
 }
 
 
-@layer base {
+/* @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -77,13 +77,37 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-}
+} */
 
 @layer base {
+  :root {
+  --background: 255 255 255;
+  --foreground: 23 23 23;
+}
+
+.dark {
+  --background: 10 10 10;
+  --foreground: 237 237 237;
+}
+
+body {
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+}
+
+}
+
+/* @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+  }
+} */
+
+@layer components {
+  .bg-ubk-chat {
+    @apply bg-gradient-to-b from-[#60efff] to-[#0061ff];
   }
 }

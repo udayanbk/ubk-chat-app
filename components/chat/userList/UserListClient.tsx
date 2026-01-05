@@ -1,16 +1,19 @@
 "use client";
 
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setSelectedUser } from "@/store/slices/chatSlice";
 import ProfileModal from "@/components/ui/ProfileModal";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { RootState } from "@/store/store";
 
 export default function UserListClient({ users }: { users: any[] }) {
   const dispatch = useDispatch();
   const [profileUser, setProfileUser] = useState<any>(null);
+  const selectedUser = useSelector((state: RootState) => state?.chat?.selectedUser);
 
   return (
-   <div className="w-80 border-r h-full overflow-y-auto bg-white">
+    <div className="w-80 border-r h-full overflow-y-auto bg-white">
       <h2 className="font-bold text-lg px-4 py-3 border-b">Chats</h2>
 
       {users.length === 0 ? (
@@ -18,11 +21,17 @@ export default function UserListClient({ users }: { users: any[] }) {
           No users available
         </div>
       ) : (
-        users.map((u: any) => (
-          <div
+        users.map((u: any) => {
+          const isActive = selectedUser?._id === u._id;
+          return <div
             key={u._id}
             onClick={() => dispatch(setSelectedUser(u))}
-            className="flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-100"
+            className={cn(
+              "flex items-center gap-3 px-4 py-2 cursor-pointer transition-colors",
+              isActive
+                ? "bg-blue-50 border-l-4 border-blue-600"
+                : "hover:bg-gray-100"
+            )}
           >
             <img
               src={u.avatar || "/default_avatar.png"}
@@ -41,7 +50,7 @@ export default function UserListClient({ users }: { users: any[] }) {
               </p>
             </div>
           </div>
-        ))
+        })
       )}
 
       <ProfileModal user={profileUser} onClose={() => setProfileUser(null)} />

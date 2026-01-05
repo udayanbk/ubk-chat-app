@@ -24,9 +24,8 @@ export default function LoginPage() {
 
     const parsed = loginSchema.safeParse(formData);
     if (!parsed.success) {
-      setError(
-        parsed.error.issues?.[0]?.message ?? "Invalid email or password"
-      );
+      const messages = parsed.error.errors.map(e => e.message);
+      setError(messages.join(", "));
       return;
     }
 

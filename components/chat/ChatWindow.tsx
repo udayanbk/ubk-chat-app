@@ -1,55 +1,63 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
+import { useSession } from "next-auth/react";
 import axios from "axios";
 import socket from "@/lib/socket/socketClient";
 import { addMessage, setMessages } from "@/store/slices/chatSlice";
 import ChatBubble from "./ChatBubble";
+import { SendHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 
 export default function ChatWindow() {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const { data: session } = useSession();
   const selectedUser = useSelector((state: RootState) => state.chat.selectedUser);
   const messages = useSelector((state: RootState) => state.chat.messages);
-
   const dispatch = useDispatch();
   const [text, setText] = useState("");
 
-  // Load messages when selecting a user
+  // 🔹 Load messages on user change
   useEffect(() => {
     async function loadMessages() {
       if (!selectedUser?._id) return;
-
       const res = await axios.get(`/api/messages?userId=${selectedUser._id}`);
       dispatch(setMessages(res.data.messages));
     }
     loadMessages();
-  }, [selectedUser]);
+  }, [selectedUser?._id, dispatch]);
 
-  // Handle sending a message
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // 🔹 Send message
   async function sendMessage() {
-    if (!text.trim() || !selectedUser) return;
+    if (!text.trim() || !selectedUser || !session?.user) return;
 
     const res = await axios.post("/api/messages", {
       receiverId: selectedUser._id,
       message: text,
     });
 
-    // Add to Redux
-    dispatch(addMessage(res.data.message));
+    const msg = res.data.message;
 
-    // Emit socket event
-    socket.emit("send-message", {
-      ...res.data.message,
-      receiverId: selectedUser._id,
-    });
+    // ✅ IMMEDIATE UI UPDATE (sender)
+    dispatch(addMessage(msg));
+
+    // ❗ DO NOT dispatch here (socket will do it)
+    socket.emit("send-message", msg);
 
     setText("");
   }
 
   if (!selectedUser) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-gray-50">
+      <div className="flex-1 flex items-center justify-center bg-gray-50">
         <p className="text-gray-400 text-lg">
           Select a user to start chatting
         </p>
@@ -57,20 +65,53 @@ export default function ChatWindow() {
     );
   }
 
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const el = textareaRef.current;
+    if (!el) return;
+
+    el.style.height = "auto";
+
+    const lineHeight = 24;
+    const maxLines = 5;
+    const maxHeight = lineHeight * maxLines;
+
+    el.style.height = Math.min(el.scrollHeight, maxHeight) + "px";
+
+    setText(e.target.value);
+  };
+
+  function formatDateLabel(dateStr: string) {
+    const date = new Date(dateStr);
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+
+    if (date.toDateString() === today.toDateString()) return "Today";
+    if (date.toDateString() === yesterday.toDateString()) return "Yesterday";
+
+    return date.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+
 
   return (
     <div className="flex-1 flex flex-col bg-gray-100">
-      {/* TOP BAR */}
+      {/* HEADER */}
       <div className="flex items-center gap-3 p-4 border-b bg-white">
         <img
           src={selectedUser.avatar || "/default_avatar.png"}
-          alt=""
           className="w-10 h-10 rounded-full"
         />
-        <div>
-          <p className="font-medium">{selectedUser.username || selectedUser.name}</p>
+        <div className="flex flex-col min-w-0">
+          <p className="font-medium truncate">
+            {selectedUser.username || selectedUser.name}
+          </p>
           {selectedUser.status && (
-            <p className="text-xs text-gray-500 max-w-sm break-words">
+            <p className="text-xs text-gray-500">
               {selectedUser.status}
             </p>
           )}
@@ -78,57 +119,73 @@ export default function ChatWindow() {
       </div>
 
       {/* MESSAGES */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-2">
-        {messages.map((msg: any) => {
-          const isMe = msg.sender !== selectedUser._id;
+      <div className="flex-1 p-4 overflow-y-auto space-y-3">
+        {messages.map((msg: any, index: number) => {
+          const isMe = msg.senderEmail === session?.user?.email;
+
+          const prev = messages[index - 1];
+          const showDate =
+            !prev ||
+            new Date(prev.createdAt).toDateString() !==
+            new Date(msg.createdAt).toDateString();
 
           return (
-            // <div
-            //   key={msg._id}
-            //   className={`flex ${isMe ? "justify-end" : "justify-start"}`}
-            // >
-            //   <div
-            //     className={`inline-block px-3 py-2 rounded-lg text-sm break-words max-w-[70%]
-            //         ${isMe
-            //         ? "bg-blue-600 text-white rounded-br-none"
-            //         : "bg-white text-gray-800 rounded-bl-none border"
-            //       }`}
-            //   >
-            //     {msg.message}
-            //   </div>
-            // </div>
-            <ChatBubble
-              key={msg._id}
-              message={msg.message}
-              isMe={isMe}
-            />
+            <div key={msg._id}>
+              {/* DATE SEPARATOR */}
+              {showDate && (
+                <div className="flex justify-center my-4">
+                  <span className="px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-600">
+                    {formatDateLabel(msg.createdAt)}
+                  </span>
+                </div>
+              )}
+
+              <ChatBubble
+                message={msg.message}
+                isMe={isMe}
+                createdAt={msg.createdAt}
+              />
+            </div>
           );
         })}
+
+        <div ref={bottomRef} />
       </div>
 
+
       {/* INPUT */}
-      <div className="p-4 border-t bg-white flex gap-2">
+      <div className="p-4 m-4 rounded-3xl border bg-white flex items-center gap-2">
         <textarea
+          ref={textareaRef}
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={handleInput}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
               sendMessage();
             }
           }}
-          placeholder="Type a message..."
           rows={1}
-          className="flex-1 resize-none border rounded p-2 focus:outline-none"
+          placeholder="Type a message..."
+          className="
+            flex-1 resize-none bg-transparent p-2
+            outline-none border-0
+            focus:ring-0
+            overflow-y-auto
+            max-h-[120px]
+          "
         />
 
-        <button
+        <Button
+          size="lg"
           onClick={sendMessage}
-          className="px-4 py-2 bg-blue-600 rounded text-white"
+          disabled={!text.trim()}
+          className="rounded-full self-center"
         >
-          Send
-        </button>
+          <SendHorizontal />
+        </Button>
       </div>
+
     </div>
   );
 }

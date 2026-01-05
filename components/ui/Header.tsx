@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import socket from "@/lib/socket/socketClient";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -82,15 +83,15 @@ export default function Header() {
   return (
     <>
       {(pathname === "/login" || pathname === "/register" || pathname === "/") ?
-        <header className="w-full bg-white border-b shadow-sm px-4 py-3 flex items-center justify-center">
-          <Link href="/" className="text-xl font-bold text-blue-600">
+        <header className="w-full bg-[#0061ff] border-b shadow-sm px-4 py-3 flex items-center justify-center">
+          <Link href="/" className="text-xl font-bold text-blue-100">
             UBK Chat
           </Link>
         </header>
         :
-        <header className="w-full bg-white border-b shadow-sm px-4 py-3 flex items-center justify-between">
+        <header className="w-full bg-[#0061ff] text-blue-100 border-b shadow-sm px-4 py-3 flex items-center justify-between">
 
-          <Link href="/" className="text-xl font-bold text-blue-600">
+          <Link href="/" className="text-xl font-bold">
             UBK Chat
           </Link>
 
@@ -107,8 +108,9 @@ export default function Header() {
               <img
                 src={user?.avatar ?? "/default_avatar.png"}
                 alt="avatar"
-                className="w-9 h-9 rounded-full border object-cover"
+                className="w-9 h-9 rounded-full border object-cover mr-2"
               />
+              <ThemeToggle />
             </button>
 
             {open && (

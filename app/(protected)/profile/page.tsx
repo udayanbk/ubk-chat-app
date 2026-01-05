@@ -108,7 +108,7 @@ export default function ProfilePage() {
     } catch (err) {
       console.error(err);
       toast({
-        variant: "destructive",
+        variant: "error",
         title: "Update failed",
         description: "Could not update status",
       });
@@ -129,7 +129,7 @@ export default function ProfilePage() {
     } catch (err) {
       console.error(err);
       toast({
-        variant: "destructive",
+        variant: "error",
         title: "Update failed",
         description: "Could not update profile",
       });
@@ -153,7 +153,7 @@ export default function ProfilePage() {
 
     } catch {
       toast({
-        variant: "destructive",
+        variant: "error",
         title: "Delete failed",
         description: "Could not delete photo",
       });
