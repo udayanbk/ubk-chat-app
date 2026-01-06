@@ -44,16 +44,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-20 bg-white p-6 rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
+    <div className="max-w-md mx-auto mt-20 bg-background p-6 rounded-3xl shadow">
+      <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
 
       {error && <p className="text-red-500 mb-2">{error}</p>}
 
       <form onSubmit={handleLogin} className="space-y-3">
-        <input name="email" placeholder="Email" className="input" />
-        <input name="password" type="password" placeholder="Password" className="input" />
+        <input name="email" placeholder="Email" className="input rounded-3xl pl-5" />
+        <input name="password" type="password" placeholder="Password" className="input rounded-3xl pl-5" />
 
-        <button className="w-full bg-blue-600 text-white py-2 rounded">
+        <button className="w-full bg-primary text-primary-foreground py-2 rounded-3xl">
           Login
         </button>
       </form>
@@ -61,7 +61,7 @@ export default function LoginPage() {
       <hr className="my-4" />
 
       <button
-        className="w-full bg-red-600 text-white py-2 rounded"
+        className="w-full bg-red-600 text-primary-foreground py-2 rounded-3xl"
         onClick={() => signIn("google", {
           callbackUrl: "/chat", // added later
         })}
@@ -70,7 +70,7 @@ export default function LoginPage() {
       </button>
 
       <button
-        className="w-full bg-gray-800 text-white py-2 rounded mt-2"
+        className="w-full bg-gray-800 text-primary-foreground py-2 rounded-3xl mt-2"
         onClick={() => signIn("github")}
       >
         Continue with GitHub

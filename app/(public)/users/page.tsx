@@ -52,7 +52,7 @@ export default async function UsersPage() {
         {users.map((u: any) => (
           <div
             key={u._id}
-            className="border rounded-lg p-4 flex items-center gap-3"
+            className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 flex items-center gap-3"
           >
             <Image
               src={u.avatar || "/default_avatar.png"}
@@ -66,7 +66,7 @@ export default async function UsersPage() {
               <p className="font-medium truncate">
                 {u.username || u.name}
               </p>
-              <p className="text-xs text-gray-500 truncate">
+              <p className="text-xs text-muted-foreground truncate">
                 {u.status || "Hi, I'm on UBK Chat"}
               </p>
             </div>

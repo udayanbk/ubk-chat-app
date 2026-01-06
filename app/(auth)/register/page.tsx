@@ -54,21 +54,21 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-20 bg-white p-6 rounded shadow">
+    <div className="max-w-md mx-auto mt-20 bg-background p-6 rounded-3xl shadow">
       <h1 className="text-2xl font-bold mb-4">Create Account</h1>
 
       {error && <p className="text-red-500 mb-2">{error}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-3">
-        <input name="name" placeholder="Full Name" className="input" />
-        <input name="username" placeholder="Username" className="input" />
-        <input name="email" placeholder="Email" className="input" />
-        <input name="mobile" placeholder="Mobile" className="input" />
-        <input name="password" type="password" placeholder="Password" className="input" />
+        <input name="name" placeholder="Full Name" className="input rounded-3xl pl-5" />
+        <input name="username" placeholder="Username" className="input rounded-3xl pl-5" />
+        <input name="email" placeholder="Email" className="input rounded-3xl pl-5" />
+        <input name="mobile" placeholder="Mobile" className="input rounded-3xl pl-5" />
+        <input name="password" type="password" placeholder="Password" className="input rounded-3xl pl-5" />
 
         <button
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded"
+          className="w-full bg-primary text-primary-foreground py-2 rounded-3xl pl-5"
         >
           {loading ? "Creating..." : "Register"}
         </button>

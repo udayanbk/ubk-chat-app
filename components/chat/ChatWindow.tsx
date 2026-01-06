@@ -57,7 +57,7 @@ export default function ChatWindow() {
 
   if (!selectedUser) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-gray-50">
+      <div className="flex-1 flex items-center justify-center bg-background ">
         <p className="text-gray-400 text-lg">
           Select a user to start chatting
         </p>
@@ -99,19 +99,20 @@ export default function ChatWindow() {
 
 
   return (
-    <div className="flex-1 flex flex-col bg-gray-100">
+    <div className="min-w-0 flex-1 overflow-hidden flex flex-col bg-background  dark:bg-slate-950">
       {/* HEADER */}
-      <div className="flex items-center gap-3 p-4 border-b bg-white">
+      <div className="flex items-center gap-3 p-4 border-b bg-background">
         <img
           src={selectedUser.avatar || "/default_avatar.png"}
-          className="w-10 h-10 rounded-full"
+          className="w-10 h-10 rounded-full 
+            bg-slate-200 dark:bg-slate-700 ring-2 ring-blue-500"
         />
         <div className="flex flex-col min-w-0">
           <p className="font-medium truncate">
             {selectedUser.username || selectedUser.name}
           </p>
           {selectedUser.status && (
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               {selectedUser.status}
             </p>
           )}
@@ -134,7 +135,7 @@ export default function ChatWindow() {
               {/* DATE SEPARATOR */}
               {showDate && (
                 <div className="flex justify-center my-4">
-                  <span className="px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-600">
+                  <span className="px-3 py-1 text-xs rounded-full bg-blue-100  dark:bg-slate-800 text-muted-foreground">
                     {formatDateLabel(msg.createdAt)}
                   </span>
                 </div>
@@ -154,7 +155,8 @@ export default function ChatWindow() {
 
 
       {/* INPUT */}
-      <div className="p-4 m-4 rounded-3xl border bg-white flex items-center gap-2">
+      <div className="p-4 m-4 rounded-3xl border-4 border-border dark:border-slate-600
+        bg-background flex items-center gap-2">
         <textarea
           ref={textareaRef}
           value={text}
@@ -169,6 +171,8 @@ export default function ChatWindow() {
           placeholder="Type a message..."
           className="
             flex-1 resize-none bg-transparent p-2
+            text-slate-900 dark:text-slate-100
+            placeholder:text-slate-400 dark:placeholder:text-slate-500
             outline-none border-0
             focus:ring-0
             overflow-y-auto

@@ -77,7 +77,7 @@ export default function Header() {
   const user = profile ?? session?.user;
 
   if (status === "loading") {
-    return <header className="w-full h-[64px] bg-white border-b" />;
+    return <header className="w-full h-[64px] bg-background border-b" />;
   }
 
   return (
@@ -108,25 +108,26 @@ export default function Header() {
               <img
                 src={user?.avatar ?? "/default_avatar.png"}
                 alt="avatar"
-                className="w-9 h-9 rounded-full border object-cover mr-2"
+                className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 object-cover mr-2"
               />
               <ThemeToggle />
             </button>
 
             {open && (
-              <div className="absolute right-0 mt-3 w-40 bg-white rounded shadow-lg border py-2 z-50">
+              <div className="absolute right-0 mt-3 w-40 bg-background text-foreground
+               rounded-md shadow-lg border border-border py-2 z-50 ">
 
-                <Link href="/chat" className="block px-4 py-2 hover:bg-gray-100">
+                <Link href="/chat" className="block px-4 py-2 hover:bg-card  dark:bg-slate-800">
                   My Chat
                 </Link>
 
-                <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100">
+                <Link href="/profile" className="block px-4 py-2 hover:bg-card  dark:bg-slate-800">
                   Profile
                 </Link>
 
                 <button
                   onClick={() => signOut({ callbackUrl: "/login" })}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  className="w-full text-left px-4 py-2 hover:bg-card  dark:bg-slate-800"
                 >
                   Logout
                 </button>

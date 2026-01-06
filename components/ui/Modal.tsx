@@ -30,20 +30,20 @@ export default function Modal({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* 🔹 BACKDROP */}
       <div
-        className="absolute inset-0 bg-black/60"
+        className="absolute inset-0 bg-background/60"
         onClick={onClose}
       />
 
       {/* 🔹 MODAL CARD */}
       <div
-        className="relative z-10 w-full max-w-lg bg-white rounded-lg shadow-lg p-6"
+        className="relative z-10 w-full max-w-lg bg-background rounded-lg shadow-lg p-6"
         onClick={(e) => e.stopPropagation()} // ⭐ THIS IS THE KEY FIX
       >
         {/* 🔹 CLOSE ICON */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-black"
+          className="absolute top-3 right-3 text-muted-foreground hover:text-foreground"
           aria-label="Close modal"
         >
           <X size={20} />

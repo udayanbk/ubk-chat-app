@@ -13,7 +13,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen p-6 text-center bg-ubk-chat">
       <h1 className="text-2xl font-bold">Welcome to UBK Chat</h1>
-      <p className="mt-2 text-gray-600">Please login or register to continue.</p>
+      <p className="mt-2 text-muted-foreground">Please login or register to continue.</p>
       <div className="flex flex-row items-center justify-center gap-5 m-5">
         <Button 
           variant="success" 

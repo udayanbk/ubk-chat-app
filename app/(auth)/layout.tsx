@@ -14,5 +14,5 @@ export default async function AuthLayout({
     redirect("/chat");
   }
 
-  return <>{children}</>;
+  return <div className="bg-ubk-chat min-h-screen flex items-start justify justify-center">{children}</div>;
 }

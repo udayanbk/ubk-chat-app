@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/ui/Header";
 import AppProviders from "@/components/providers/AppProviders";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "../components/ui/Footer";
 
 export const metadata: Metadata = {
   title: "Chat App",
@@ -18,11 +19,11 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-neutral-500">
         <AppProviders>
-          <div className="mx-auto max-w-[50%] min-h-screen bg-white">
+          <div className="mx-auto max-w-[50%] h-screen bg-background flex flex-col">
             <Header />
-            <main>{children}</main>
+            <main className="flex-1 overflow-hidden">{children}</main>
+            <Footer />
           </div>
-
           {/* 🔥 Toasts live OUTSIDE layout container */}
           <Toaster />
         </AppProviders>

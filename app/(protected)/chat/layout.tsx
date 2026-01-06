@@ -8,7 +8,7 @@ export default function ChatLayout({
   modal: React.ReactNode;
 }) {
   return (
-    <div className="flex h-[calc(100vh-64px)] bg-gray-50 relative">
+    <div className="h-full flex bg-background  relative">
       {users}
       {chat}
       {modal}

@@ -11,13 +11,13 @@ const buttonVariants = cva(
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
 
         success:
-          "bg-emerald-600 text-white hover:bg-emerald-700",
+          "bg-emerald-600 text-primary-foreground hover:bg-emerald-700",
 
         destructive:
-          "bg-red-600 text-white hover:bg-red-700",
+          "bg-red-600 text-primary-foreground hover:bg-red-700",
 
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "border border-slate-200 dark:border-slate-700 border-input bg-background hover:bg-accent hover:text-accent-foreground",
       },
       size: {
         default: "h-10 px-4 py-2",

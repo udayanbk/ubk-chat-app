@@ -187,7 +187,7 @@ export default function ProfilePage() {
   if (!user) return null;
 
   return (
-    <div className="mx-auto mt-10 bg-white p-6 rounded shadow">
+    <div className="mx-auto mt-10 bg-background p-6 rounded shadow">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         {/* LEFT SECTION – INFO */}
@@ -195,17 +195,21 @@ export default function ProfilePage() {
           <div className="text-center">
             <img
               src={user.avatar || "/default_avatar.png"}
-              className="w-28 h-28 rounded-full mx-auto border object-cover"
+              className="mx-auto
+    w-28 h-28 rounded-full object-cover
+    bg-slate-200 dark:bg-slate-700
+    ring-2 ring-blue-500
+  "
             />
 
             <h2 className="text-xl font-semibold mt-3">
               {user.username || user.name}
             </h2>
 
-            <p className="text-gray-600 text-sm">{session.user.email}</p>
-            <p className="text-gray-600 text-sm">{user.mobile}</p>
+            <p className="text-muted-foreground text-sm">{session.user.email}</p>
+            <p className="text-muted-foreground text-sm">{user.mobile}</p>
             <div className="mt-4 flex items-center justify-center gap-3">
-              <p className="text-gray-700 text-sm max-w-[70%] text-center">
+              <p className="text-muted-foreground text-sm max-w-[70%] text-center">
                 {user.status || "No status"}
               </p>
 
@@ -231,7 +235,7 @@ export default function ProfilePage() {
                   mobile: user.mobile || "",
                 });
               }}
-              className="h-20 bg-indigo-600 hover:bg-indigo-700 transition text-white rounded font-medium"
+              className="h-20 bg-indigo-600 hover:bg-indigo-700 transition text-primary-foreground rounded font-medium"
             >
               Update Profile
             </button>
@@ -241,14 +245,14 @@ export default function ProfilePage() {
                 setEditType("status");
                 setInputValue(user.status || "");
               }}
-              className="h-20 bg-slate-600 hover:bg-slate-700 transition text-white rounded font-medium"
+              className="h-20 bg-slate-600 hover:bg-slate-700 transition text-primary-foreground rounded font-medium"
             >
               Update Status
             </button>
 
             <button
               onClick={() => router.push("/chat")}
-              className="h-16 col-span-2 bg-emerald-600 hover:bg-emerald-700 transition text-white rounded font-semibold"
+              className="h-16 col-span-2 bg-emerald-600 hover:bg-emerald-700 transition text-primary-foreground rounded font-semibold"
             >
               Start Chatting
             </button>
@@ -269,14 +273,15 @@ export default function ProfilePage() {
                   <li key={u._id} className="flex items-center gap-2">
                     <img
                       src={u.avatar || "/default_avatar.png"}
-                      className="w-7 h-7 rounded-full"
+                      className="w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700
+    ring-2 ring-blue-500"
                     />
                     <span>{u.username || u.name}</span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-gray-500">No likes yet.</p>
+              <p className="text-sm text-muted-foreground">No likes yet.</p>
             )}
           </DialogContent>
         </Dialog>
@@ -293,7 +298,7 @@ export default function ProfilePage() {
             {editType === "profile" ? (
               <div className="space-y-3 mt-2">
                 <input
-                  className="w-full border rounded p-2"
+                  className="w-full border border-slate-200 dark:border-slate-700 rounded p-2"
                   placeholder="Username"
                   value={form.username}
                   onChange={(e) =>
@@ -302,7 +307,7 @@ export default function ProfilePage() {
                 />
 
                 <input
-                  className="w-full border rounded p-2"
+                  className="w-full border border-slate-200 dark:border-slate-700 rounded p-2"
                   placeholder="Full Name"
                   value={form.name}
                   onChange={(e) =>
@@ -311,7 +316,7 @@ export default function ProfilePage() {
                 />
 
                 <input
-                  className="w-full border rounded p-2"
+                  className="w-full border border-slate-200 dark:border-slate-700 rounded p-2"
                   placeholder="Mobile"
                   value={form.mobile}
                   onChange={(e) =>
@@ -322,12 +327,12 @@ export default function ProfilePage() {
             ) : (
               <>
                 <input
-                  className="w-full border rounded p-2 mt-2"
+                  className="w-full border border-slate-200 dark:border-slate-700 rounded p-2 mt-2"
                   maxLength={100}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                 />
-                <p className="text-xs text-gray-500 text-right mt-1">
+                <p className="text-xs text-muted-foreground text-right mt-1">
                   {inputValue.length}/100
                 </p>
               </>
@@ -355,7 +360,7 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-lg">Your Photos</h3>
 
-            <label className="cursor-pointer bg-blue-600 text-white px-3 py-1.5 rounded text-sm">
+            <label className="cursor-pointer bg-primary text-primary-foreground px-3 py-1.5 rounded text-sm">
               {uploading ? "Uploading..." : "Upload Photos"}
               <input
                 type="file"
@@ -368,7 +373,7 @@ export default function ProfilePage() {
 
           {/* PHOTO GRID */}
           {user.photos?.length === 0 ? (
-            <div className="flex items-center justify-center h-48 border rounded text-gray-500 text-sm">
+            <div className="flex items-center justify-center h-48 border border-slate-200 dark:border-slate-700 rounded text-muted-foreground text-sm">
               No photos uploaded yet
             </div>
           ) : (
@@ -391,7 +396,7 @@ export default function ProfilePage() {
                       e.stopPropagation();
                       deletePhoto(url);
                     }}
-                    className="absolute top-1 right-1 bg-black/60 text-white rounded-full px-2 text-xs hidden group-hover:block"
+                    className="absolute top-1 right-1 bg-background/60 text-primary-foreground rounded-full px-2 text-xs hidden group-hover:block"
                   >
                     ✕
                   </button>
@@ -401,7 +406,7 @@ export default function ProfilePage() {
                       e.stopPropagation();
                       setAsAvatar(url);
                     }}
-                    className="absolute bottom-1 left-1 right-1 bg-black/60 text-white text-xs py-1 rounded hidden group-hover:block"
+                    className="absolute bottom-1 left-1 right-1 bg-background/60 text-primary-foreground text-xs py-1 rounded hidden group-hover:block"
                   >
                     Set as avatar
                   </button>

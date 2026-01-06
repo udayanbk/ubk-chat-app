@@ -13,7 +13,7 @@ export default function UserListClient({ users }: { users: any[] }) {
   const selectedUser = useSelector((state: RootState) => state?.chat?.selectedUser);
 
   return (
-    <div className="w-80 border-r h-full overflow-y-auto bg-white">
+    <div className="flex-[0_0_40%] min-w-[240px] max-w-[360px] h-full overflow-y-auto bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700">
       <h2 className="font-bold text-lg px-4 py-3 border-b">Chats</h2>
 
       {users.length === 0 ? (
@@ -29,13 +29,14 @@ export default function UserListClient({ users }: { users: any[] }) {
             className={cn(
               "flex items-center gap-3 px-4 py-2 cursor-pointer transition-colors",
               isActive
-                ? "bg-blue-50 border-l-4 border-blue-600"
-                : "hover:bg-gray-100"
+                ? "bg-blue-100 dark:bg-blue-900/40 border-l-4 border-blue-600"
+                : "hover:bg-blue-50 dark:hover:bg-slate-800"
             )}
           >
             <img
               src={u.avatar || "/default_avatar.png"}
-              className="w-10 h-10 rounded-full object-cover"
+              className="w-10 h-10 rounded-full object-cover
+               bg-slate-200 dark:bg-slate-700 ring-2 ring-blue-500"
               onClick={(e) => {
                 e.stopPropagation();
                 setProfileUser(u);
@@ -45,7 +46,7 @@ export default function UserListClient({ users }: { users: any[] }) {
               <p className="font-medium truncate">
                 {u.username || u.name}
               </p>
-              <p className="text-xs text-gray-500 truncate">
+              <p className="text-xs text-muted-foreground truncate">
                 {u.status || "Hi, I'm on UBK Chat"}
               </p>
             </div>

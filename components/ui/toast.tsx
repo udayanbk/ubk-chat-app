@@ -25,16 +25,18 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-start justify-start gap-3 rounded-md border p-4 shadow-lg transition-all text-left",
+  "group pointer-events-auto relative flex w-full items-start gap-3 rounded-md border border-slate-200 dark:border-slate-700 p-4 shadow-lg transition-all",
   {
     variants: {
       variant: {
         default:
-          "bg-white text-gray-900 border-gray-200",
+          "bg-background text-foreground border-border",
+
         success:
-          "bg-emerald-600 text-white border-emerald-600",
+          "bg-emerald-600 text-white border-emerald-600 dark:bg-emerald-500",
+
         error:
-          "bg-red-600 text-white border-red-600",
+          "bg-destructive text-destructive-foreground border-destructive",
       },
     },
     defaultVariants: {
@@ -42,6 +44,7 @@ const toastVariants = cva(
     },
   }
 )
+
 
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
@@ -65,7 +68,7 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 group-[.error]:border-muted/40 group-[.error]:hover:border-destructive/30 group-[.error]:hover:bg-destructive group-[.error]:hover:text-destructive-foreground group-[.error]:focus:ring-destructive",
+      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-slate-200 dark:border-slate-700 bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 group-[.error]:border-muted/40 group-[.error]:hover:border-destructive/30 group-[.error]:hover:bg-destructive group-[.error]:hover:text-destructive-foreground group-[.error]:focus:ring-destructive",
       className
     )}
     {...props}

@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils";
 export default function ChatBubble({
   message,
   isMe,
-  createdAt
+  createdAt,
 }: {
   message: string;
   isMe: boolean;
+  createdAt?: string;
 }) {
-
   function formatTime(date: string) {
     return new Date(date).toLocaleTimeString([], {
       hour: "2-digit",
@@ -19,36 +19,41 @@ export default function ChatBubble({
   }
 
   return (
-    <div className={cn("whitespace-pre-wrap break-words flex", isMe ? "justify-end" : "justify-start")}>
+    <div className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "relative max-w-[70%] px-3 py-2 text-sm leading-relaxed",
-          "rounded-lg",
+          "relative max-w-[70%] px-3 py-2 text-sm leading-relaxed rounded-2xl shadow-sm",
           isMe
-            ? "bg-blue-600 text-white rounded-br-none"
-            : "bg-muted text-foreground rounded-bl-none border"
+            ? "bg-blue-600 text-white rounded-br-md"
+            : "bg-blue-100  dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-bl-md border border-slate-200 dark:border-slate-700"
         )}
       >
-        <p className="whitespace-pre-wrap break-words">{message}</p>
+        {/* MESSAGE */}
+        <p className="whitespace-pre-wrap break-words">
+          {message}
+        </p>
 
-        {/* time */}
+        {/* TIME */}
         {createdAt && (
-          <span
-            className={`bottom right-2 text-[10px] opacity-70
-              ${isMe ? "text-white" : "text-gray-500"}
-            `}
+          <div
+            className={cn(
+              "mt-1 text-[10px] text-right opacity-70 select-none",
+              isMe
+                ? "text-white/80"
+                : "text-slate-500 dark:text-slate-400"
+            )}
           >
             {formatTime(createdAt)}
-          </span>
+          </div>
         )}
 
-        {/* Tail */}
+        {/* TAIL */}
         <span
           className={cn(
             "absolute bottom-0 w-3 h-3",
             isMe
               ? "right-[-6px] bg-blue-600 clip-tail-right"
-              : "left-[-6px] bg-muted border-l border-b clip-tail-left"
+              : "left-[-6px] bg-blue-100  dark:bg-slate-800 border-l border-b border-slate-200 dark:border-slate-700 clip-tail-left"
           )}
         />
       </div>
