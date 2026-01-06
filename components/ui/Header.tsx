@@ -11,7 +11,7 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const pathname = usePathname();
 
   // 🔹 Close dropdown on route change

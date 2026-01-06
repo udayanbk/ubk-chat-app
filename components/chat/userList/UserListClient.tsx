@@ -6,10 +6,11 @@ import ProfileModal from "@/components/ui/ProfileModal";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { RootState } from "@/store/store";
+import { User } from "@/types/user";
 
-export default function UserListClient({ users }: { users: any[] }) {
+export default function UserListClient({ users }: { users: User[] }) {
   const dispatch = useDispatch();
-  const [profileUser, setProfileUser] = useState<any>(null);
+  const [profileUser, setProfileUser] = useState<User | null>(null);
   const selectedUser = useSelector((state: RootState) => state?.chat?.selectedUser);
 
   return (
@@ -21,8 +22,9 @@ export default function UserListClient({ users }: { users: any[] }) {
           No users available
         </div>
       ) : (
-        users.map((u: any) => {
+        users.map((u: User) => {
           const isActive = selectedUser?._id === u._id;
+          console.log("u----", u)
           return <div
             key={u._id}
             onClick={() => dispatch(setSelectedUser(u))}
@@ -36,7 +38,7 @@ export default function UserListClient({ users }: { users: any[] }) {
             <img
               src={u.avatar || "/default_avatar.png"}
               className="w-10 h-10 rounded-full object-cover
-               bg-slate-200 dark:bg-slate-700 ring-2 ring-blue-500"
+               bg-slate-200 dark:bg-slate-700 ring-2 ring-blue-500 shrink-0"
               onClick={(e) => {
                 e.stopPropagation();
                 setProfileUser(u);

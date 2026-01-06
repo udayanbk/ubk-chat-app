@@ -1,4 +1,4 @@
-export type ChatMessage = {
+export interface ChatMessage {
   _id: string;
   message: string;
   senderId: string;
@@ -6,4 +6,4 @@ export type ChatMessage = {
   receiverId: string;
   receiverEmail: string;
   createdAt: string;
-};
+}

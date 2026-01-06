@@ -57,9 +57,7 @@ export const authOptions = {
   ],
 
   callbacks: {
-    async signIn({ user, account }) {
-      // ❌ DO NOT create user manually
-      // Adapter already handles OAuth users
+    async signIn() {
       return true;
     },
 

@@ -5,30 +5,34 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Heart } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { toast } from "../../hooks/use-toast";
+// import { toast } from "../../hooks/use-toast";
 import socket from "@/lib/socket/socketClient";
+import { User } from "../../types/user";
 
 export default function ProfileModal({
   user,
   onClose,
 }: {
-  user: any;
+  user: User;
   onClose: () => void;
 }) {
   const { data: session } = useSession();
   // const myEmail = session?.user?.email; // ✅ USE EMAIL
   const myUserId = session?.user?._id;
 
-  const [localUser, setLocalUser] = useState<any>(null);
+  const [localUser, setLocalUser] = useState<User | null>(null);
   const [liking, setLiking] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user) setLocalUser(user);
+    if (user) {
+      console.log("user--aa", user)
+      setLocalUser(user);
+    }
   }, [user]);
 
   if (!localUser) return null;
-
+  console.log("user bb", user)
   const alreadyLiked =
     Array.isArray(localUser.statusLikes) &&
     // localUser.statusLikes.includes(myUserId);
@@ -42,7 +46,7 @@ async function toggleLikeStatus() {
 
   setLiking(true);
 
-  setLocalUser((prev: any) => ({
+  setLocalUser((prev: User) => ({
     ...prev,
     statusLikes: alreadyLiked
       ? prev.statusLikes.filter((id: any) => id !== myUserId)
@@ -59,6 +63,7 @@ async function toggleLikeStatus() {
     socket.emit("profile-updated");
   } catch (err) {
     console.error("Like toggle failed", err);
+
     setLocalUser(user);
   } finally {
     setLiking(false);
@@ -69,7 +74,12 @@ if (!user) return null;
 
   return (
     <Modal open={!!user} onClose={onClose}>
-      <div className="text-center">
+        <div
+          className="w-full max-w-md mx-auto text-center
+            rounded-2xl p-6 bg-white dark:bg-slate-900
+            text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700 shadow-xl"
+        >
+
         <img
           src={localUser.avatar || "/default_avatar.png"}
           className="w-24 h-24 mx-auto rounded-full border border-slate-200 dark:border-slate-700 object-cover"
@@ -78,9 +88,16 @@ if (!user) return null;
         <h2 className="text-xl font-semibold mt-3">
           {localUser.username || localUser.name}
         </h2>
+        <h2 className="text-base mt-2">
+          {localUser.email || localUser.email}
+        </h2>
+        <h2 className="text-base">
+          {localUser.mobile || localUser.mobile}
+        </h2>
 
         <div className="border border-slate-200 dark:border-slate-700 border-gray-300 rounded-full p-3 mt-3">
-          <p className="text-gray-700 text-sm">
+          <p className="text-sm bg-white dark:bg-slate-900
+            text-slate-900 dark:text-slate-100">
             {localUser.status || "Hi I'm on UBK Chat"}
           </p>
 
@@ -101,7 +118,7 @@ if (!user) return null;
             </button>
           )}
         </div>
-
+        
         <div className="grid grid-cols-3 gap-2 mt-4">
           {localUser.photos?.map((url: string, i: number) => (
             <img

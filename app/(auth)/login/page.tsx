@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import axios from "axios";
+// import axios from "axios";
 import { loginSchema } from "@/utils/validations";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
 
-  async function handleLogin(e: any) {
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
 

@@ -1,26 +1,29 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "@/types/user";
+import { ChatMessage } from "@/types/chatMessage";
 
-type ChatUser = {
-  _id: string;
-  name: string;
-  username?: string;
-  avatar?: string;
-};
 
-type ChatMessage = {
-  _id?: string;
-  sender: string;
-  receiver: string;
-  message: string;
-  mediaUrl?: string;
-  mediaType?: string;
-  createdAt?: string;
-};
+// type ChatUser = {
+//   _id: string;
+//   name: string;
+//   username?: string;
+//   avatar?: string;
+// };
+
+// type ChatMessage = {
+//   _id?: string;
+//   sender: string;
+//   receiver: string;
+//   message: string;
+//   mediaUrl?: string;
+//   mediaType?: string;
+//   createdAt?: string;
+// };
 
 interface ChatState {
-  selectedUser: ChatUser | null;
+  selectedUser: User | null;
   messages: ChatMessage[];
-  onlineUsers: string[]; // array of user IDs who are online
+  onlineUsers: string[];
 }
 
 const initialState: ChatState = {

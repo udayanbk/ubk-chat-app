@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cookies } from "next/headers";
+import { User } from "../../../types/user";
 
 // async function getUsers() {
 //   const cookieStore = cookies();
@@ -49,7 +50,7 @@ export default async function UsersPage() {
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {users.map((u: any) => (
+        {users.map((u: User) => (
           <div
             key={u._id}
             className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 flex items-center gap-3"

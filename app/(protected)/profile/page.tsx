@@ -8,13 +8,14 @@ import { Heart } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import socket from "@/lib/socket/socketClient";
+import { User } from "../../../types/user";
+// import socket from "@/lib/socket/socketClient";
 
 export default function ProfilePage() {
   const router = useRouter();
   const { data: session, status: authStatus } = useSession();
   const [profileStatus, setProfileStatus] = useState("");
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   // const [status, setStatus] = useState("");
   const [uploading, setUploading] = useState(false);
   const [showLikes, setShowLikes] = useState(false);
@@ -95,7 +96,7 @@ export default function ProfilePage() {
         status: updatedStatus,
       });
 
-      setUser((prev: any) => ({
+      setUser((prev: User) => ({
         ...prev,
         status: updatedStatus,
       }));
@@ -142,7 +143,7 @@ export default function ProfilePage() {
     try {
       await axios.patch("/api/profile", { deletePhoto: url });
 
-      setUser((prev: any) => ({
+      setUser((prev: User) => ({
         ...prev,
         photos: prev.photos.filter((p: string) => p !== url),
       }));
@@ -165,7 +166,7 @@ export default function ProfilePage() {
     try {
       await axios.patch("/api/profile", { avatar: url });
 
-      setUser((prev: any) => ({
+      setUser((prev: User) => ({
         ...prev,
         avatar: url,
       }));
@@ -269,7 +270,7 @@ export default function ProfilePage() {
 
             {user.statusLikes?.length ? (
               <ul className="mt-2 space-y-2 text-sm">
-                {user.statusLikes.map((u: any) => (
+                {user.statusLikes.map((u: User) => (
                   <li key={u._id} className="flex items-center gap-2">
                     <img
                       src={u.avatar || "/default_avatar.png"}

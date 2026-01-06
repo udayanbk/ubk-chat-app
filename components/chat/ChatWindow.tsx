@@ -10,6 +10,7 @@ import { addMessage, setMessages } from "@/store/slices/chatSlice";
 import ChatBubble from "./ChatBubble";
 import { SendHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ChatMessage } from "../../types/chatMessage";
 
 
 export default function ChatWindow() {
@@ -105,7 +106,7 @@ export default function ChatWindow() {
         <img
           src={selectedUser.avatar || "/default_avatar.png"}
           className="w-10 h-10 rounded-full 
-            bg-slate-200 dark:bg-slate-700 ring-2 ring-blue-500"
+            bg-slate-200 dark:bg-slate-700 ring-2 ring-blue-500 shrink-0"
         />
         <div className="flex flex-col min-w-0">
           <p className="font-medium truncate">
@@ -121,7 +122,7 @@ export default function ChatWindow() {
 
       {/* MESSAGES */}
       <div className="flex-1 p-4 overflow-y-auto space-y-3">
-        {messages.map((msg: any, index: number) => {
+        {messages.map((msg: ChatMessage, index: number) => {
           const isMe = msg.senderEmail === session?.user?.email;
 
           const prev = messages[index - 1];

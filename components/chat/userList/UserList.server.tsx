@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 import UserListClient from "./UserListClient";
 import { connectDB } from "@/lib/db";
 import User from "@/lib/models/User";
@@ -15,7 +15,7 @@ async function getUsers() {
   if (!me) return [];
 
   const users = await User.find({ _id: { $ne: me._id } })
-    .select("name username avatar status");
+    .select("name username avatar status photos mobile email");
 
   return users;
 }
