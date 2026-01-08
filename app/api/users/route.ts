@@ -47,7 +47,6 @@ export async function GET() {
 
     const myEmail = session.user.email;
 
-    // ✅ EXCLUDE LOGGED-IN USER BY EMAIL
     const users = await User.find({
       email: { $ne: myEmail },
     }).select(

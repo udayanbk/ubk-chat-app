@@ -22,7 +22,6 @@ const MessageSchema = new Schema(
     mediaUrl: {
       type: String,
       default: "", 
-      // Example: S3 public URL → https://s3.amazonaws.com/bucket/file.jpg
     },
 
     mediaType: {
@@ -56,7 +55,6 @@ const MessageSchema = new Schema(
   { timestamps: true }
 );
 
-// Prevent recompilation during hot reload
 const Message = models.Message || mongoose.model("Message", MessageSchema);
 
 export default Message;

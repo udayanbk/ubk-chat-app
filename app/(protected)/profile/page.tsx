@@ -19,7 +19,7 @@ export default function ProfilePage() {
   // const [status, setStatus] = useState("");
   const [uploading, setUploading] = useState(false);
   const [showLikes, setShowLikes] = useState(false);
-  const [editType, setEditType] = useState<EditType>(null);
+  const [editType, setEditType] = useState<"profile" | "status">();
   const [form, setForm] = useState({
     username: "",
     name: "",
@@ -63,7 +63,6 @@ export default function ProfilePage() {
     return res.data.url;
   }
 
-  // 🔹 Auto upload gallery photos
   async function handleGalleryChange(files: FileList | null) {
     if (!files || files.length === 0) return;
 
@@ -174,7 +173,7 @@ export default function ProfilePage() {
         title: "Avatar updated",
         description: "Your profile picture was updated",
       });
-      // Update header instantly
+
       window.dispatchEvent(new Event("profile-updated"));
     } catch {
       toast({
@@ -191,7 +190,6 @@ export default function ProfilePage() {
     <div className="mx-auto mt-10 bg-background p-6 rounded shadow">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        {/* LEFT SECTION – INFO */}
         <div>
           <div className="text-center">
             <img
@@ -260,7 +258,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* STATUS LIKES POPUP */}
         <Dialog open={showLikes} onOpenChange={setShowLikes}>
           <DialogContent>
             <DialogHeader>
@@ -356,7 +353,6 @@ export default function ProfilePage() {
         </Dialog>
 
 
-        {/* RIGHT SECTION – PHOTOS */}
         <div>
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-lg">Your Photos</h3>
@@ -372,7 +368,6 @@ export default function ProfilePage() {
             </label>
           </div>
 
-          {/* PHOTO GRID */}
           {user.photos?.length === 0 ? (
             <div className="flex items-center justify-center h-48 border border-slate-200 dark:border-slate-700 rounded text-muted-foreground text-sm">
               No photos uploaded yet
@@ -385,7 +380,6 @@ export default function ProfilePage() {
                   className="relative group cursor-pointer"
                   onClick={() => setViewPhoto(url)}
                 >
-                  {/* Photo */}
                   <img
                     src={url}
                     className="w-full h-28 object-cover rounded"

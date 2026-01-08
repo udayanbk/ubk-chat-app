@@ -17,7 +17,6 @@ export default function ProfileModal({
   onClose: () => void;
 }) {
   const { data: session } = useSession();
-  // const myEmail = session?.user?.email; // ✅ USE EMAIL
   const myUserId = session?.user?._id;
 
   const [localUser, setLocalUser] = useState<User | null>(null);

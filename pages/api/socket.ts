@@ -9,7 +9,6 @@ export const config = {
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!res.socket.server.io) {
-    console.log("🔥 Initializing Socket.IO server");
 
     const io = new IOServer(res.socket.server, {
       path: "/api/socket",
@@ -19,7 +18,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
-      console.log("🟢 Connected:", socket.id);
 
       socket.on("join", (email: string) => {
         console.log("JOIN ROOM:", email);
@@ -27,7 +25,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       });
 
       socket.on("send-message", (msg) => {
-        console.log("📨 Emitting to:", msg.receiverEmail);
         io.to(msg.receiverEmail).emit("receive-message", msg);
       });
     });

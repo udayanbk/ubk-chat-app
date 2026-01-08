@@ -13,7 +13,7 @@ export default function SocketProvider({ children }: { children: React.ReactNode
   useEffect(() => {
   if (!session?.user?.email) return;
 
-  fetch("/api/socket"); // 🔥 THIS BOOTS SERVER
+  fetch("/api/socket");
   socket.connect();
   socket.emit("join", session.user.email);
 

@@ -10,11 +10,11 @@ const UserSchema = new Schema(
     username: {
       type: String,
       unique: true,
-      sparse: true, // fixes potential uniqueness issues
+      sparse: true,
     },
 
     status: {
-      type: String, // example: "Happy", "Busy", etc.
+      type: String,
       default: "",
     },
 
@@ -26,8 +26,8 @@ const UserSchema = new Schema(
 
     password: {
       type: String,
-      select: false, // never expose during queries
-      required: false, // not required for OAuth users
+      select: false,
+      required: false,
     },
 
     mobile: {
@@ -35,7 +35,7 @@ const UserSchema = new Schema(
     },
 
     avatar: {
-      type: String, // main profile picture
+      type: String,
       default: "",
     },
 
@@ -47,14 +47,13 @@ const UserSchema = new Schema(
     statusLikes: [
       {
         type: Schema.Types.ObjectId,
-        ref: "User", // users who liked the status
+        ref: "User",
       },
     ],
   },
   { timestamps: true }
 );
 
-// Prevent re-compilation during hot reload
 const User = models.User || mongoose.model("User", UserSchema);
 
 export default User;

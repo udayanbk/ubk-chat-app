@@ -22,7 +22,6 @@ export default function ChatWindow() {
   const dispatch = useDispatch();
   const [text, setText] = useState("");
 
-  // 🔹 Load messages on user change
   useEffect(() => {
     async function loadMessages() {
       if (!selectedUser?._id) return;
@@ -36,7 +35,6 @@ export default function ChatWindow() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // 🔹 Send message
   async function sendMessage() {
     if (!text.trim() || !selectedUser || !session?.user) return;
 
@@ -47,10 +45,8 @@ export default function ChatWindow() {
 
     const msg = res.data.message;
 
-    // ✅ IMMEDIATE UI UPDATE (sender)
     dispatch(addMessage(msg));
 
-    // ❗ DO NOT dispatch here (socket will do it)
     socket.emit("send-message", msg);
 
     setText("");
@@ -101,7 +97,6 @@ export default function ChatWindow() {
 
   return (
     <div className="min-w-0 flex-1 overflow-hidden flex flex-col bg-background  dark:bg-slate-950">
-      {/* HEADER */}
       <div className="flex items-center gap-3 p-4 border-b bg-background">
         <img
           src={selectedUser.avatar || "/default_avatar.png"}
@@ -120,7 +115,6 @@ export default function ChatWindow() {
         </div>
       </div>
 
-      {/* MESSAGES */}
       <div className="flex-1 p-4 overflow-y-auto space-y-3">
         {messages.map((msg: ChatMessage, index: number) => {
           const isMe = msg.senderEmail === session?.user?.email;
@@ -133,7 +127,6 @@ export default function ChatWindow() {
 
           return (
             <div key={msg._id}>
-              {/* DATE SEPARATOR */}
               {showDate && (
                 <div className="flex justify-center my-4">
                   <span className="px-3 py-1 text-xs rounded-full bg-blue-100  dark:bg-slate-800 text-muted-foreground">
@@ -155,7 +148,6 @@ export default function ChatWindow() {
       </div>
 
 
-      {/* INPUT */}
       <div className="p-4 m-4 rounded-3xl border-4 border-border dark:border-slate-600
         bg-background flex items-center gap-2">
         <textarea

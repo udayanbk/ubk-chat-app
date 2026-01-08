@@ -28,12 +28,10 @@ export default function ChatBubble({
             : "bg-blue-100  dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-bl-md border border-slate-200 dark:border-slate-700"
         )}
       >
-        {/* MESSAGE */}
         <p className="whitespace-pre-wrap break-words">
           {message}
         </p>
 
-        {/* TIME */}
         {createdAt && (
           <div
             className={cn(
@@ -47,7 +45,6 @@ export default function ChatBubble({
           </div>
         )}
 
-        {/* TAIL */}
         <span
           className={cn(
             "absolute bottom-0 w-3 h-3",

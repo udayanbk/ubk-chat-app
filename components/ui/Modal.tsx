@@ -12,7 +12,6 @@ export default function Modal({
   onClose: () => void;
   children: ReactNode;
 }) {
-  // 🔹 Close on ESC
   useEffect(() => {
     if (!open) return;
 
@@ -28,18 +27,15 @@ export default function Modal({
 
   return (
       <div className="fixed inset-0 z-50 bg-black/60 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center" >
-      {/* 🔹 BACKDROP */}
       <div
         className="absolute inset-0 bg-background/5"
         onClick={onClose}
       />
 
-      {/* 🔹 MODAL CARD */}
       <div
         className="relative z-10 w-full max-w-lg bg-background rounded-lg shadow-lg p-6"
-        onClick={(e) => e.stopPropagation()} // ⭐ THIS IS THE KEY FIX
+        onClick={(e) => e.stopPropagation()} 
       >
-        {/* 🔹 CLOSE ICON */}
         <button
           type="button"
           onClick={onClose}

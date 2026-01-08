@@ -14,12 +14,10 @@ export default function Header() {
   const [profile, setProfile] = useState<User | null>(null);
   const pathname = usePathname();
 
-  // 🔹 Close dropdown on route change
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
-  // 🔹 Close dropdown on outside click
   useEffect(() => {
     if (!open) return;
 
@@ -38,7 +36,6 @@ export default function Header() {
     };
   }, [open]);
 
-  // 🔹 Fetch fresh profile
   useEffect(() => {
     if (status !== "authenticated") return;
 

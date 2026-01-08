@@ -44,7 +44,6 @@ export const authOptions = {
 
         if (!isValid) throw new Error("Invalid password");
 
-        // ✅ return minimal safe object
         return {
           _id: user._id.toString(),
           email: user.email,
@@ -62,14 +61,12 @@ export const authOptions = {
     },
 
     async jwt({ token, user }) {
-      // 🔹 First login (credentials)
       if (user?._id) {
         token._id = user._id;
         token.username = user.username;
         token.avatar = user.avatar;
       }
 
-      // 🔹 OAuth login (Google/GitHub)
       if (!token._id && token.email) {
         try {
           await connectDB();
